@@ -10,5 +10,4 @@ class ReaderSerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Article
-        fields = ['name', 'topic', 'creator', 'body']
-        depth = 1
+        fields = ['name', 'creator', 'created','get_short_body', 'tags', 'topic', ]

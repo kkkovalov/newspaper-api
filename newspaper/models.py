@@ -44,4 +44,6 @@ class Article(models.Model):
     def __str__(self):
         return self.name
     
+    def get_short_body(self):
+        return self.body[:100] + '...'
     
