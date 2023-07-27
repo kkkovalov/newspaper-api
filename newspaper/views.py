@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.core import exceptions
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
 
 # rest_framework packages
 from rest_framework import serializers
@@ -16,9 +17,12 @@ from . import models, forms
 from .serializers import ArticleSerializer, UserSerializer
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def loginUser(request):
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        return JsonResponse({'message': 'Already logged in'})
+    
+    elif request.method == "POST":
         username = request.POST.get('username').lower()
         password = request.POST.get('password')
         try:
@@ -35,18 +39,40 @@ def loginUser(request):
                 })
         else:
             return JsonResponse({'message': 'user not found'})
+    else:
+        return rest_exceptions.NotFound
 
+@api_view(['POST'])
+def registerUser(request):
+    if request.method == 'POST':
+        user = UserCreationForm(request.POST)
+        if user.is_valid():
+            try:
+                email = request.POST.get('email')
+            except:
+                return JsonResponse({'message': 'email is missing'})
+            
+            user = user.save(commit=False)
+            user.email = email
+            user.save()
+            return JsonResponse({'message': 'successfuly added a user'})
+        else:
+            return JsonResponse({'message': 'not valid'})     
+    else:
+        return JsonResponse({'message': 'non'}) 
 
 # Create your views here.
 def homeView(request):
     return render(request, 'newspaper/home.html')
 
+
+# Article views
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def articlesView(request):
     articles = models.Article.objects.all()
     articles_serializer = ArticleSerializer(articles, many=True)
-    return Response(articles_serializer.data)
+    return JsonResponse(articles_serializer.data, safe=False)
     
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -57,12 +83,17 @@ def singleArticleView(request, id):
         except:
             return exceptions.ObjectDoesNotExist
         article_serializer = ArticleSerializer(article)
-        return Response(article_serializer.data)
+        return JsonResponse(article_serializer.data)
     else:
         return exceptions.BadRequest
 
-def articlesByTopicView(request, topic):
+# Topic views
+
+@api_view(['GET'])
+def topicView(request):
     pass
+
+# User views
 
 @api_view(['GET', 'POST'])
 def creatorView(request, username):
