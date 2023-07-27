@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 from . import models
-from .serializers import ArticleSerializer, ReaderSerializer
+from .serializers import ArticleSerializer, UserSerializer
 from django.core import exceptions
 
 
@@ -14,8 +14,8 @@ def homeView(request):
 
 def articlesView(request):
     articles = models.Article.objects.all()
-    serializer = ArticleSerializer(articles, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    articles_serializer = ArticleSerializer(articles, many=True)
+    return JsonResponse(articles_serializer.data, safe=False)
     
 def singleArticleView(request, id):
     if request.method == "GET":
@@ -23,6 +23,8 @@ def singleArticleView(request, id):
             article = models.Article.objects.get(id=id)
         except:
             return exceptions.ObjectDoesNotExist
+        article_serializer = ArticleSerializer(article)
+        return JsonResponse(article_serializer.data)
     else:
         return exceptions.BadRequest
 
@@ -30,10 +32,20 @@ def articlesByTopicView(request, topic):
     pass
 
 def creatorView(request, username):
-    if request.method == 'POST':
+    if request.method == 'GET':
         try:
-            creator = models.Creator.objects.get(username=username)
+            user = models.User.objects.get(username=username)
+            articles = models.Article.objects.filter(creator=user)
         except:
-            return exceptions.ObjectDoesNotExist            
+            return exceptions.ObjectDoesNotExist
+        article_serializer = ArticleSerializer(articles, many=True)
+        user_serializer = UserSerializer(user)
+        json_context = {
+            'user': user_serializer.data,
+            'articles': article_serializer.data,
+        }
+        return JsonResponse(json_context, safe=False)
+        
+        # return JsonResponse(user_serializer.data)
     else:
         return exceptions.BadRequest
