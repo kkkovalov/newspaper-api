@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newspaper API</title>
+  </head>
+  <body>
+    <h1>Welcome to Newspaper API</h1>
+
+    <ul>
+      <li>
+        <p><a href="{% url 'articles-view' %}">/articles/</a> - to return the list of all articles in the database
+        </p>
+        <small style="display: block">- returns article.name, article.short_body, creator.name and topic.name</small>
+      </li>
+      <li>
+        <p><a href="{% url 'single-article-view' 1 %}">/article/?id/</a> - to return a single article, by id
+        </p>
+        <small style="display: block">- returns article.name, article.short_body, creator.name and topic.name</small>
+      </li>
+      <li>
+        <p><a href="{% url 'single-article-view' 1 %}">/article/?id/</a> - to return a single article, by id
+        </p>
+        <small style="display: block">- returns article.name, article.short_body, creator.name and topic.name</small>
+      </li>
+    </ul>
+  </body>
+  <footer>
+    <p>created by @kkkovalov</p>
+  </footer>
+</html>
