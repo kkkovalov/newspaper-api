@@ -17,10 +17,10 @@ from . import models, forms
 from .serializers import ArticleSerializer, UserSerializer
 
 
-@api_view(['POST', 'GET'])
+@api_view(['POST'])
 def loginUser(request):
     if request.user.is_authenticated:
-        return JsonResponse({'message': 'Already logged in'})
+        return JsonResponse({'logged_in': True})
     
     elif request.method == "POST":
         username = request.POST.get('username').lower()
@@ -38,28 +38,29 @@ def loginUser(request):
                 'access': str(refresh.access_token),
                 })
         else:
-            return JsonResponse({'message': 'user not found'})
+            return JsonResponse({'message': 'user not found', }, status=404)
     else:
         return rest_exceptions.NotFound
 
 @api_view(['POST'])
 def registerUser(request):
     if request.method == 'POST':
-        user = UserCreationForm(request.POST)
+        
+        if request.user.is_authenticated():
+            return JsonResponse({'logged_in': True})
+        
+        # created a user based on user info (username, email, password1, password2)
+        user = forms.ReaderCreationForm(request.POST)
+        # if request.POST.get('email') == '':
+        #     raise rest_exceptions.ValidationError
         if user.is_valid():
-            try:
-                email = request.POST.get('email')
-            except:
-                return JsonResponse({'message': 'email is missing'})
-            
-            user = user.save(commit=False)
-            user.email = email
+        
             user.save()
-            return JsonResponse({'message': 'successfuly added a user'})
+            return JsonResponse({'message': 'Successfuly added a user'})
         else:
-            return JsonResponse({'message': 'not valid'})     
+            raise rest_exceptions.ValidationError
     else:
-        return JsonResponse({'message': 'non'}) 
+        raise rest_exceptions.APIException
 
 # Create your views here.
 def homeView(request):
@@ -68,7 +69,6 @@ def homeView(request):
 
 # Article views
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def articlesView(request):
     articles = models.Article.objects.all()
     articles_serializer = ArticleSerializer(articles, many=True)
