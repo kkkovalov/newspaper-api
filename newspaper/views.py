@@ -21,13 +21,13 @@ def authenticateUser(request):
 def homeView(request):
     return render(request, 'newspaper/home.html')
 
-# @api_view(['GET', 'POST'])
+@api_view(['GET'])
 def articlesView(request):
     articles = models.Article.objects.all()
     articles_serializer = ArticleSerializer(articles, many=True)
-    # return Response(articles_serializer.data)
-    return HttpResponse(request.auth)
+    return Response(articles_serializer.data)
     
+@api_view(['GET'])
 def singleArticleView(request, id):
     if request.method == "GET":
         try:
@@ -35,13 +35,14 @@ def singleArticleView(request, id):
         except:
             return exceptions.ObjectDoesNotExist
         article_serializer = ArticleSerializer(article)
-        return JsonResponse(article_serializer.data)
+        return Response(article_serializer.data)
     else:
         return exceptions.BadRequest
 
 def articlesByTopicView(request, topic):
     pass
 
+@api_view(['GET', 'POST'])
 def creatorView(request, username):
     if request.method == 'GET':
         try:
