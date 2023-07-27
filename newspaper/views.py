@@ -1,20 +1,40 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.core import exceptions
+from django.contrib.auth import authenticate
 
 # rest_framework packages
 from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import exceptions as rest_exceptions
+from rest_framework_simplejwt.tokens import RefreshToken
 
 # local packages
-from . import models
+from . import models, forms
 from .serializers import ArticleSerializer, UserSerializer
 
-@api_view(['GET'])
-def authenticateUser(request):
-    user
+
+@api_view(['POST'])
+def loginUser(request):
+    if request.method == "POST":
+        username = request.POST.get('username').lower()
+        password = request.POST.get('password')
+        try:
+            user = models.User.objects.get(username=username)
+        except:
+            return rest_exceptions.AuthenticationFailed
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            return JsonResponse({
+                'message': 'user found',
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                })
+        else:
+            return JsonResponse({'message': 'user not found'})
 
 
 # Create your views here.
@@ -22,12 +42,14 @@ def homeView(request):
     return render(request, 'newspaper/home.html')
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def articlesView(request):
     articles = models.Article.objects.all()
     articles_serializer = ArticleSerializer(articles, many=True)
     return Response(articles_serializer.data)
     
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def singleArticleView(request, id):
     if request.method == "GET":
         try:

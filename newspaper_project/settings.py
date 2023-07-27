@@ -35,10 +35,10 @@ DEBUG = bool(os.getenv('DEBUG'))
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework_simplejwt',
     'newspaper.apps.NewspaperConfig',
     'rest_framework',
     'corsheaders',
@@ -140,9 +140,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ]
 }
 
 SIMPLE_JWT = {
