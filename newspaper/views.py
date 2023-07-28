@@ -16,11 +16,22 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from . import models, forms
 from .serializers import ArticleSerializer, UserSerializer
 
-
+# verifying the user's email in the database
 @api_view(['POST'])
+def verifyUserExists(request):
+    email = request.POST.get('email')
+    try:
+        user = models.User.objects.get(email=email)
+    except:
+        return Response({'detail': 'User does not exist'}, status=400)
+    if user is not None:
+        return Response({'detail': 'User exists in the database'}, status=200)
+
+        
+@api_view(["POST"])
 def loginUser(request):
     if request.user.is_authenticated:
-        return JsonResponse({'logged_in': True})
+        return Response({'detail': 'Logged in already',})
     
     elif request.method == "POST":
         username = request.POST.get('username').lower()
@@ -72,7 +83,7 @@ def homeView(request):
 def articlesView(request):
     articles = models.Article.objects.all()
     articles_serializer = ArticleSerializer(articles, many=True)
-    return JsonResponse(articles_serializer.data, safe=False)
+    return Response(articles_serializer.data)
     
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
