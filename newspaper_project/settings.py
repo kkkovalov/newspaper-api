@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'newspaper.apps.NewspaperConfig',
     'rest_framework',
     'corsheaders',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

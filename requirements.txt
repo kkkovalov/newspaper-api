@@ -9,6 +9,7 @@ django-cors-headers==4.2.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 gotrue==0.2.0
+gunicorn==21.2.0
 h11==0.14.0
 httpcore==0.12.3
 httpx==0.16.1
