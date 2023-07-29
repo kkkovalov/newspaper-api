@@ -2,6 +2,7 @@ from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import user_passes_test
 
 # rest_framework packages
 from rest_framework import serializers
@@ -75,6 +76,15 @@ def updateUser(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data)
+
+def is_creator(user):
+    return user.groups.filter(name="Creator").exists()
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+@user_passes_test(is_creator, login_url='bad-request')
+def addToCreatorGroup(request):
+    return Response({'detail': 'Allowed here'})
 
 # @api_view(["POST"])
 # @permission_classes([IsAuthenticated])

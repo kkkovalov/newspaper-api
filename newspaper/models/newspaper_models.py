@@ -21,7 +21,7 @@ class Tag(models.Model):
 
 class Article(models.Model):
     name = models.CharField(max_length=500, verbose_name="Article name", blank=False)
-    slug_name = models.CharField(max_length=500, verbose_name="Slug name", blank=False)
+    # slug_name = models.CharField(max_length=500, verbose_name="Slug name", blank=False)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False,blank=False)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=False, blank=False)
     body = models.TextField(verbose_name="Article body")

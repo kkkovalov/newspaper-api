@@ -1,9 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils import timezone
 
 # Create your models here.
+
 
 
 class UserManager(BaseUserManager):
@@ -47,4 +48,3 @@ class User(AbstractUser):
     def update_last_login(self):
         self.last_login = timezone.now()
         self.save()
-    
