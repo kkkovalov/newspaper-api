@@ -1,4 +1,4 @@
-from newspaper.models import Article, User
+from newspaper.models import Article, User, Topic, Tag
 from rest_framework import serializers
 
 # User related serializer
@@ -42,4 +42,9 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ['name', 'creator', 'created','get_short_body', 'tags', 'topic']
-     
+        
+        
+class TopicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = ['name', 'description']

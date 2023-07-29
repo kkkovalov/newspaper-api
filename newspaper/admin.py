@@ -28,9 +28,10 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
 
+
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'description']
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):

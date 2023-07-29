@@ -77,17 +77,9 @@ def updateUser(request):
     serializer.save()
     return Response(serializer.data)
 
-def is_creator(user):
-    return user.groups.filter(name="Creator").exists()
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-@user_passes_test(is_creator, login_url='bad-request')
-def addToCreatorGroup(request):
-    return Response({'detail': 'Allowed here'})
-
 # @api_view(["POST"])
 # @permission_classes([IsAuthenticated])
+# @user_passes_test(is_creator, login_url='bad-request')
 # def testAPI(request):
 #     serializer = UserSerializer(request.user, data=request.data, partial=True)
 #     serializer.is_valid(raise_exception=True)

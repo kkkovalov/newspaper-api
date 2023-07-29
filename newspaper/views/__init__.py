@@ -1,5 +1,8 @@
 from .user_views import *
 from .article_views import *
+from .creator_views import *
+from .topic_views import *
+
 from django.shortcuts import render
 from django.http import JsonResponse
 
