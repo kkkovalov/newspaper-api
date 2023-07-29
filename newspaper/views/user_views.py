@@ -1,6 +1,6 @@
 from django.http import JsonResponse, HttpResponse
 from django.core import exceptions
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
 # rest_framework packages
@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import exceptions as rest_exceptions
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTStatelessUserAuthentication
 
 # local packages
 from newspaper import models, forms
@@ -20,11 +21,19 @@ from newspaper.serializers import ArticleSerializer, UserSerializer
 def verifyUserExists(request):
     email = request.POST.get('email')
     try:
-        user = models.User.objects.get(email=email)
+        user = get_user_model().objects.get(email=email)
     except:
         return Response({'detail': 'User does not exist', 'user_found': False,}, status=404)
     if user is not None:
         return Response({'detail': 'User exists in the database', 'user_found': True}, status=200)
+
+@api_view(["POST"])
+def loginAPI(request):
+    serializer = UserSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data)
+    
 
 # logging in the user
 @api_view(["POST"])
@@ -32,43 +41,36 @@ def loginUser(request):
     if request.user.is_authenticated:
         return Response({'detail': 'Logged in already', 'logged_in': True}, status=200)
     
-    elif request.method == "POST":
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        try:
-            user = models.User.objects.get(email=email)
-        except:
-            raise rest_exceptions.AuthenticationFailed()
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            refresh = RefreshToken.for_user(user)
-            login(request,user)
-            return JsonResponse({
-                'message': 'user found',
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                })
-        else:
-            return JsonResponse({'message': 'user not found', }, status=404)
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    
+    try:
+        user = models.User.objects.get(email=email)
+    except:
+        raise rest_exceptions.AuthenticationFailed('User not found')
+    if user is not None:
+        if not user.check_password(password):
+            raise rest_exceptions.AuthenticationFailed('Incorrect password')
+        refresh = RefreshToken.for_user(user)
+        
+        return Response({
+            'detail': 'User found',
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            })
     else:
-        return Response({'detail': 'Something went wrong, please try again.'}, status=404)
+        return JsonResponse({'message': 'User not Found', }, status=404)
 
+
+# registering new user
 @api_view(['POST'])
 def registerUser(request):
-    if request.method == 'POST':
         
-        if request.user.is_authenticated():
-            return JsonResponse({'logged_in': True})
+    if request.user.is_authenticated:
+        return JsonResponse({'logged_in': True})
         
-        # created a user based on user info (username, email, password1, password2)
-        user = forms.ReaderCreationForm(request.POST)
-        # if request.POST.get('email') == '':
-        #     raise rest_exceptions.ValidationError
-        if user.is_valid():
-        
-            user.save()
-            return JsonResponse({'message': 'Successfuly added a user'})
-        else:
-            raise rest_exceptions.ValidationError
-    else:
-        raise rest_exceptions.APIException
+    # created a user based on user info (email, password)
+    user = UserSerializer(data=request.data)
+    user.is_valid(raise_exception=True)
+    user.save()
+    return Response({'detail': 'Successfully added the user'}, status=200)

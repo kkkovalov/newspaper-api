@@ -15,8 +15,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 # local packages
 from newspaper import models, forms
 from newspaper.serializers import ArticleSerializer, UserSerializer
+
+
 # Article views
+
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def articlesView(request):
     articles = models.Article.objects.all()
     articles_serializer = ArticleSerializer(articles, many=True)
