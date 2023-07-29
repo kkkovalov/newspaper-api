@@ -1,11 +1,11 @@
-from . import models
+from newspaper.models import Article, User
 from rest_framework import serializers
 
 # User related serializer
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.User
+        model = User
         fields = ['email', 'password']
         extra_kwargs = {
             'password': {
@@ -28,6 +28,6 @@ class ArticleSerializer(serializers.ModelSerializer):
     created = serializers.DateTimeField(format='%Y%m%d', read_only=True)
     
     class Meta:
-        model = models.Article
+        model = Article
         fields = ['name', 'creator', 'created','get_short_body', 'tags', 'topic']
      
