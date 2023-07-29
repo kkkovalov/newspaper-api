@@ -21,7 +21,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
     path('', include('newspaper.urls')),
     path('admin/', admin.site.urls),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
+    path('api-refresh/', TokenRefreshView.as_view(), name='token_refresh')
     
     # included in user logging in function view
     # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

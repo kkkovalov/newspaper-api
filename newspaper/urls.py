@@ -6,13 +6,14 @@ urlpatterns = [
     
     # path('test/', views.user_views.testAPI),
     
-    path('verify/', views.user_views.verifyUserExists, name='verify-user'),
-    path('login/', views.user_views.loginUser, name='login-user'),
-    path('register/', views.user_views.registerUser, name='register-user'),
+    path('user/verify/', views.user_views.verifyUserExists, name='user-verify'),
+    path('user/login/', views.user_views.loginUser, name='user-login'),
+    path('user/register/', views.user_views.registerUser, name='user-register'),
+    path('user/update/', views.user_views.updateUser, name='user-update'),
     
     
     path('articles/', views.article_views.articlesView, name="articles-view"),
-    path('articles/<str:id>/', views.article_views.singleArticleView, name='single-article-view'),
+    path('articles/<str:slug_name>/', views.article_views.singleArticleView, name='single-article-view'),
     
     path('topics/', views.article_views.topicView, name='topic-view'),
     
