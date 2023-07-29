@@ -4,7 +4,7 @@ from newspaper import views
 urlpatterns = [
     path('', views.homeView, name='home-view'),
     
-    path('test/', views.user_views.loginAPI),
+    # path('test/', views.user_views.testAPI),
     
     path('verify/', views.user_views.verifyUserExists, name='verify-user'),
     path('login/', views.user_views.loginUser, name='login-user'),

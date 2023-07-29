@@ -1,13 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from . import models
+from newspaper.models import Topic, Article, Tag, User
 
 # Models view
 
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password', 'last_login')}),
-        ('Permissions', {'fields': ('is_active','is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Permissions', {'fields': ('is_active','date_joined','is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         )
     add_fieldsets = (
         (
@@ -19,7 +19,7 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
     
-    list_display = ('email', 'is_staff', 'last_login')
+    list_display = ('email', 'is_staff', 'last_login', 'date_joined')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     search_fields = ('email',)
     ordering = ('email',)
@@ -39,7 +39,7 @@ class TagAdmin(admin.ModelAdmin):
     list_display=['name']
 
 # Register your models here
-admin.site.register(models.Topic, TopicAdmin)
-admin.site.register(models.Article, ArticleAdmin)
-admin.site.register(models.Tag, TagAdmin)
-admin.site.register(models.User, UserAdmin)
+admin.site.register(Topic, TopicAdmin)
+admin.site.register(Article, ArticleAdmin)
+admin.site.register(Tag, TagAdmin)
+admin.site.register(User, UserAdmin)

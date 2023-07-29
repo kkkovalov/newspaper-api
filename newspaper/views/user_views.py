@@ -1,5 +1,5 @@
 from django.http import JsonResponse, HttpResponse
-from django.core import exceptions
+from django.utils import timezone
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import exceptions as rest_exceptions
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.authentication import JWTStatelessUserAuthentication
 
 # local packages
 from newspaper import models, forms
@@ -27,12 +26,12 @@ def verifyUserExists(request):
     if user is not None:
         return Response({'detail': 'User exists in the database', 'user_found': True}, status=200)
 
-@api_view(["POST"])
-def loginAPI(request):
-    serializer = UserSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response(serializer.data)
+# @api_view(["POST"])
+# def testAPI(request):
+#     serializer = UserSerializer(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+#     serializer.save()
+#     return Response(serializer.data)
     
 
 # logging in the user
@@ -45,14 +44,15 @@ def loginUser(request):
     password = request.POST.get('password')
     
     try:
-        user = models.User.objects.get(email=email)
+        user = get_user_model().objects.get(email=email)
     except:
         raise rest_exceptions.AuthenticationFailed('User not found')
     if user is not None:
         if not user.check_password(password):
             raise rest_exceptions.AuthenticationFailed('Incorrect password')
-        refresh = RefreshToken.for_user(user)
         
+        user.update_last_login()
+        refresh = RefreshToken.for_user(user)
         return Response({
             'detail': 'User found',
             'refresh': str(refresh),
