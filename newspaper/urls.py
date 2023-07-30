@@ -28,4 +28,7 @@ urlpatterns = [
     
     # urls for topics interaction
     path('topics/', views.topic_views.TopicView.as_view(), name='topic-view'),
+    
+    #urls for tag interaction
+    path('tags/', views.tag_views.TagView.as_view(), name='tag-view'),
 ]
