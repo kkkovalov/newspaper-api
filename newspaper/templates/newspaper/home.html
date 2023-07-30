@@ -7,60 +7,12 @@
   </head>
   <body>
     <h1>Welcome to Newspaper API</h1>
-    <div class="main requests">
-      <ul>
-        <li class="single-request">
-          <p>
-            <a href="{% url 'articles-view' %}">/articles/</a> - to return the
-            list of all articles in the database
-          </p>
-          <ul>
-            <p style="display: block">-> returns all serialized articles</p>
-            <p style="display: block">-> no authentication required</p>
-            <p style="display: block">-> only GET requests allowed</p>
-          </ul>
-        </li>
 
-        <li class="single-request">
-          <p>
-            <a href="{% url 'single-article-view' 1 %}">/article/?id/</a> - to
-            return a single article, by id
-          </p>
-          <ul>
-            <p style="display: block">- returns serialized article by id</p>
-            <p style="display: block">-> authentication required</p>
-            <p style="display: block">-> only GET requests allowed</p>
-          </ul>
-        </li>
-
-        <li class="single-request">
-          <p><a href="{% url 'register-user' %}">/register/</a></p>
-          <ul>
-            <p style="display: block">-> returns successfull message</p>
-            <p style="display: block">
-              -> no auth required, but verifies that no auth is present (returns
-              {"logged_in": True} message)
-            </p>
-            <p style="display: block">-> only POST requests</p>
-          </ul>
-        </li>
-
-        <li class="single-request">
-          <p><a href="{% url 'login-user' %}">/login</a></p>
-          <ul>
-            <p style="display: block">
-              -> returns JSON object {'message': 'user found', 'refresh':
-              refresh_token, 'access': access_token}
-            </p>
-            <p style="display: block">
-              -> no auth required, but verifies that no auth is present (returns
-              {"logged_in": True} message)
-            </p>
-            <p style="display: block"></p>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <h3>
+      Please visit
+      <a href="/docs">Documentation page</a>
+      for more information
+    </h3>
   </body>
   <footer>
     <p>created by @kkkovalov</p>

@@ -1,9 +1,18 @@
 from django.db import models
 from django.contrib import admin
 from django.conf import settings
+from django.dispatch import receiver
 from django.utils.text import slugify
+from django.db.models.signals import pre_save
+
 
 # Create your models here.
+@receiver(pre_save)
+def _pre_save_slugify(sender, instance, **kwargs):
+    instance.slug_name = slugify(instance.name)
+    
+
+
     
 class Topic(models.Model):
     name = models.CharField(max_length=100, verbose_name="Topic name", blank=False, unique=True)
@@ -15,7 +24,8 @@ class Topic(models.Model):
     
     
 class Tag(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=False, unique=True)
+    slug_name = models.CharField(max_length=100, blank=False, unique=True, default='')
     
     def __str__(self):
         return self.name
@@ -24,7 +34,7 @@ class Tag(models.Model):
 
 class Article(models.Model):
     name = models.CharField(max_length=500, verbose_name="Article name", blank=False, unique=True)
-    slug_name = models.CharField(max_length=500, verbose_name="Slug name", blank=False, default='', unique=True)
+    slug_name = models.CharField(max_length=500, verbose_name="Slug name", blank=False, unique=True, default='')
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False,blank=False)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=False, blank=False)
     body = models.TextField(verbose_name="Article body")

@@ -1,9 +1,11 @@
 from django.urls import path
 from newspaper import views
 
+
+app_name = "newspaper"
+
 urlpatterns = [
     path('', views.homeView, name='home-view'),
-    
     # path('test/', views.user_views.testAPI),
     
     # url to redirect non-creator group users

@@ -47,4 +47,5 @@ class ArticleSerializer(serializers.ModelSerializer):
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'slug_name']
+        read_only_fields = ['slug_name']

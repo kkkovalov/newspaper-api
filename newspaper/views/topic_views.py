@@ -1,9 +1,3 @@
-from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
-from django.core import exceptions
-from django.contrib.auth import authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import user_passes_test
 from django.utils.text import slugify
 
 # rest_framework packages
@@ -22,6 +16,9 @@ from newspaper.views.creator_views import is_creator
 class TopicView(APIView):
     
     def get(self, request, format=None):
+        """
+        Returns a list of JSON objects, if they exist in the database. No request body required.
+        """
         try:
             topics_list = Topic.objects.all()
         except:
@@ -30,17 +27,29 @@ class TopicView(APIView):
         return Response(serializer.data, status=200)
     
     def post(self, request, format=None):
+        """
+        Returns JSON confirmation of adding the topic to the database.
+        """
         if request.user.is_authenticated:
             if is_creator(request.user):
-                return Response({'detail': 'post request response'}, status=200)
+                topic = TopicSerializer(data=request.data)
+                topic.is_valid(raise_exception=True)
+                topic.save()
+                return Response(topic.data, status=200)
             else:
                 raise rest_exceptions.PermissionDenied
         else:
             raise rest_exceptions.AuthenticationFailed
     
     def put(self, request, format=None):
+        """
+        Takes JSON object with keys (name, description). Returns updated object.
+        """
         return Response({'detail': 'put request response'}, status=200)
     
     def delete(self, request, format=None):
+        """
+        Deletes the object and returns a confirmation message
+        """
         return Response({'detail': 'delete request response'}, status=200)
 
