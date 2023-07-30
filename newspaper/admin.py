@@ -1,9 +1,12 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import GroupAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from newspaper.models import Topic, Article, Tag, User
 
 # Models view
-
+@admin.register(User)
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password', 'last_login')}),
@@ -25,9 +28,12 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
     filter_horizontal = ('groups', 'user_permissions',)
 
-class TopicAdmin(admin.ModelAdmin):
-    pass
 
+@admin.register(Topic)
+class TopicAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description']
+
+@admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name', 'creator']}),
@@ -35,11 +41,6 @@ class ArticleAdmin(admin.ModelAdmin):
     ]
     list_display=['name','creator', 'created', 'topic']
 
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display=['name']
-
-# Register your models here
-admin.site.register(Topic, TopicAdmin)
-admin.site.register(Article, ArticleAdmin)
-admin.site.register(Tag, TagAdmin)
-admin.site.register(User, UserAdmin)
+    list_display=['name']    

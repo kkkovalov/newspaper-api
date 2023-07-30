@@ -1,13 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils import timezone
 
 # Create your models here.
 
 
+
 class UserManager(BaseUserManager):
-    def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, email, password, is_staff:bool, is_superuser:bool, first_name:str=None, last_name:str=None, **extra_fields):
         if not email:
             raise ValueError('Users must have an email address')
         now = timezone.now()
@@ -17,6 +18,8 @@ class UserManager(BaseUserManager):
             is_staff=is_staff,
             is_superuser=is_superuser,
             is_active=True,
+            first_name=first_name,
+            last_name=last_name,
             last_login=now,
             date_joined=now,
             **extra_fields
@@ -45,4 +48,3 @@ class User(AbstractUser):
     def update_last_login(self):
         self.last_login = timezone.now()
         self.save()
-    
