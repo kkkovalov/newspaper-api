@@ -10,7 +10,6 @@ from newspaper.serializers import TagSerializer
 
 class TagView(APIView):
     
-    
     def get(self, request, format=None):
         """
         Returns all tags from the database. If query parameter 'name' (in slug format) specified in the url, it will return a single object.
