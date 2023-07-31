@@ -78,7 +78,7 @@ class TopicView(APIView):
                 except:
                     raise exceptions.NotFound
                 # serializes and validates the object before saving it to the database
-                serializer = TopicSerializer(topic, data=request.data)
+                serializer = TopicSerializer(topic, data=request.data, partial=True)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
                 # returns updated object back to the user

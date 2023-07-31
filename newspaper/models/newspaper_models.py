@@ -9,7 +9,9 @@ from django.db.models.signals import pre_save
 # Create your models here.
 @receiver(pre_save)
 def _pre_save_slugify(sender, instance, **kwargs):
-    instance.slug_name = slugify(instance.name)
+    list_of_models = {'Tag', 'Topic', 'Article'}
+    if sender.__name__ in list_of_models:
+            instance.slug_name = slugify(instance.name)
     
 
 
