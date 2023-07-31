@@ -9,6 +9,9 @@ from newspaper.serializers import TagSerializer
 class TagView(APIView):
     
     def get(self, request, format=None):
+        """
+        Returns all tags from the database. If query parameter 'slug_name' specified in the url, it will return a single object.
+        """
         if 'slug_name' in request.query_params:
             slug = request.query_params['slug_name']
             try:
@@ -26,6 +29,9 @@ class TagView(APIView):
             return Response(serializer.data, status=200)
     
     def post(self, request, format=None):
+        """
+        Creator permission and authentication required to access this request. Takes a 'name' field and returns a created Tag
+        """
         if request.user.is_authenticated:
             if is_creator(request.user):
                 serializer = TagSerializer(data=request.data)
@@ -38,6 +44,9 @@ class TagView(APIView):
             raise exceptions.NotAuthenticated
     
     def put(self, request, format=None):
+        """
+        Creator permission and authentication required to access this request. Takes a 'slug_name' to locate the object and 'name' field with updated value. Returns updated object.
+        """
         if request.user.is_authenticated:
             if is_creator(request.user):
                 try:
@@ -54,6 +63,9 @@ class TagView(APIView):
             raise exceptions.NotAuthenticated
     
     def delete(self, request, format=None):
+        """
+        Creator permission and authentication required to access this request. Takes a 'slug_name' field and returns OK message upon deletion.
+        """
         if request.user.is_authenticated:
             if is_creator(request.user):
                 try:
