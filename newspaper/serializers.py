@@ -50,6 +50,7 @@ class TopicSerializer(serializers.ModelSerializer):
         fields = ['name', 'description', 'slug_name']
         read_only_fields = ['slug_name']
         
+# Tag serializer for Tag model. Serializes 'name' and 'slug_name' fields, returns both fields with default ordering by 'name'
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag

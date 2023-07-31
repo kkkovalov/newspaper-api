@@ -27,13 +27,15 @@ class Topic(models.Model):
         ordering = ['name']
     
     
+# Model class for Tag, returns 'name' field by default.
 class Tag(models.Model):
     name = models.CharField(max_length=100, blank=False, unique=True, verbose_name="Name")
     slug_name = models.CharField(max_length=100, blank=False, unique=True,verbose_name="Slug name", default='')
     
     def __str__(self):
         return self.name
-    
+
+    # Meta related class for ordering
     class Meta:
         ordering = ['name']
 

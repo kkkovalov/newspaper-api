@@ -26,9 +26,9 @@ urlpatterns = [
     path('creator/articles/new', views.creator_views.newArticleView, name='new-article'),
     path('creator/articles/<str:slug_name>', views.creator_views.editArticleView, name='edit-article'),
     
-    # urls for topics interaction
+    # url for topics interaction
     path('topics/', views.topic_views.TopicView.as_view(), name='topic-view'),
     
-    #urls for tag interaction
+    # url for tag interaction, GET, POST, PUT, DELETE requests.
     path('tags/', views.tag_views.TagView.as_view(), name='tag-view'),
 ]
