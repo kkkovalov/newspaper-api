@@ -10,10 +10,10 @@ class TagView(APIView):
     
     def get(self, request, format=None):
         """
-        Returns all tags from the database. If query parameter 'slug_name' specified in the url, it will return a single object.
+        Returns all tags from the database. If query parameter 'name' (in slug format) specified in the url, it will return a single object.
         """
-        if 'slug_name' in request.query_params:
-            slug = request.query_params['slug_name']
+        if 'name' in request.query_params:
+            slug = request.query_params['name']
             try:
                 tag = Tag.objects.get(slug_name=slug)
             except:
