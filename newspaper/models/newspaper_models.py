@@ -13,7 +13,6 @@ def _pre_save_slugify(sender, instance, **kwargs):
     if sender.__name__ in list_of_models:
             instance.slug_name = slugify(instance.name)
 
-
     
 class Topic(models.Model):
     name = models.CharField(max_length=100, verbose_name="Topic name", blank=False, unique=True)
