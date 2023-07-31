@@ -19,8 +19,9 @@ urlpatterns = [
     
     
     # urls for article interaction for readers
-    path('articles/', views.article_views.articlesView, name="articles-view"),
-    path('articles/<str:slug_name>/', views.article_views.singleArticleView, name='single-article-view'),
+    path('articles/', views.article_views.AritcleView.as_view(), name="articles-view"),
+    
+    # path('articles/<str:slug_name>/', views.article_views.singleArticleView, name='single-article-view'),
     
     # urls for creator interaction with articles
     path('creator/articles/new', views.creator_views.newArticleView, name='new-article'),

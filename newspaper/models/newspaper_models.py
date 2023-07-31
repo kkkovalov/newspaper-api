@@ -12,8 +12,6 @@ def _pre_save_slugify(sender, instance, **kwargs):
     instance.slug_name = slugify(instance.name)
     
 
-
-    
 class Topic(models.Model):
     name = models.CharField(max_length=100, verbose_name="Topic name", blank=False, unique=True)
     description = models.CharField(max_length=255, verbose_name="Description", blank=True)
