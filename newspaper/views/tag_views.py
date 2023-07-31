@@ -71,7 +71,7 @@ class TagView(APIView):
                     tag = Tag.objects.get(slug_name=request.data['slug_name'])
                 except:
                     raise exceptions.NotFound
-                serializer = TagSerializer(tag,request.data)
+                serializer = TagSerializer(tag,request.data, partial=True)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
                 # returns updated object to the client
