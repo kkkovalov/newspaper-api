@@ -49,3 +49,9 @@ class TopicSerializer(serializers.ModelSerializer):
         model = Topic
         fields = ['name', 'description', 'slug_name']
         read_only_fields = ['slug_name']
+        
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['name', 'slug_name']
+        read_only_fields = ['slug_name']

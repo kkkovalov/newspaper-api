@@ -9,8 +9,9 @@ from django.db.models.signals import pre_save
 # Create your models here.
 @receiver(pre_save)
 def _pre_save_slugify(sender, instance, **kwargs):
-    instance.slug_name = slugify(instance.name)
-    
+    list_of_models = {'Tag', 'Topic', 'Article'}
+    if sender.__name__ in list_of_models:
+            instance.slug_name = slugify(instance.name)
 
 
     
@@ -24,8 +25,8 @@ class Topic(models.Model):
     
     
 class Tag(models.Model):
-    name = models.CharField(max_length=100, blank=False, unique=True)
-    slug_name = models.CharField(max_length=100, blank=False, unique=True, default='')
+    name = models.CharField(max_length=100, blank=False, unique=True, verbose_name="Name")
+    slug_name = models.CharField(max_length=100, blank=False, unique=True,verbose_name="Slug name", default='')
     
     def __str__(self):
         return self.name
