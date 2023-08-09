@@ -15,8 +15,6 @@ from rest_framework import exceptions as rest_exceptions
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # local packages
-from newspaper import models, forms
-from newspaper.serializers import ArticleSerializer, UserSerializer
 
 def is_creator(user):
     return user.groups.filter(name="Creator").exists()

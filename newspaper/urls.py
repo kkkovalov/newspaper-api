@@ -12,10 +12,7 @@ urlpatterns = [
     path('badrequest/', views.badRequest, name='bad-request'),
     
     # urls for user interaction
-    path('user/verify/', views.user_views.verifyUserExists, name='user-verify'),
-    path('user/login/', views.user_views.loginUser, name='user-login'),
-    path('user/register/', views.user_views.registerUser, name='user-register'),
-    path('user/update/', views.user_views.updateUser, name='user-update'),
+
     
     
     # urls for article interaction for readers
