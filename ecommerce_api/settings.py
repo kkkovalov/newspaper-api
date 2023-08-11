@@ -22,6 +22,8 @@ DEBUG = bool(os.getenv("DJANGO_DEBUG", False))
 ALLOWED_HOSTS = ["*"]
 # os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1, localhost").split(",")
 
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", 'https://localhost:8000,http://127.0.0.1:8000').split(',')
+CORS_ALLOWED_CREDENTIALS = True
 
 # Application definition
 
@@ -40,9 +42,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -146,7 +148,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "users.authentication.CustomJWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -154,7 +156,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "AUTH_HEADERS_JWT": ("JWT",),
+    
 }
 
 DJOSER = {
@@ -165,3 +167,12 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
 }
+
+AUTH_COOKIE = 'access'
+AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5
+AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24
+AUTH_COOKIE_SECURE = bool(os.getenv('AUTH_COOKIE_SECURE', True))
+AUTH_COOKIE_HTTP_ONLY = True
+AUTH_COOKIE_PATH = '/'
+AUTH_COOKIE_SAMESITE = 'None'
+
