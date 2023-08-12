@@ -1,7 +1,6 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,14 +76,25 @@ WSGI_APPLICATION = "ecommerce_api.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": str(os.getenv("DB_NAME")),
+#         "USER": str(os.getenv("DB_USER")),
+#         "PASSWORD": str(os.getenv("DB_PASSWORD")),
+#         "HOST": str(os.getenv("DB_HOST")),
+#         "PORT": str(os.getenv("DB_PORT")),
+#     }
+# }
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": str(os.getenv("DB_NAME")),
-        "USER": str(os.getenv("DB_USER")),
-        "PASSWORD": str(os.getenv("DB_PASSWORD")),
-        "HOST": str(os.getenv("DB_HOST")),
-        "PORT": str(os.getenv("DB_PORT")),
+        "NAME": str(os.getenv("LOCAL_DB_NAME")),
+        "USER": str(os.getenv("LOCAL_DB_USER")),
+        "PASSWORD": str(os.getenv("LOCAL_DB_PASSWORD")),
+        "HOST": str(os.getenv("LOCAL_DB_HOST")),
+        "PORT": str(os.getenv("LOCAL_DB_PORT")),
     }
 }
 
