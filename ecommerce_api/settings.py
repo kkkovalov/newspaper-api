@@ -88,19 +88,6 @@ DATABASES = {
     }
 }
 
-# email settings
-EMAIL_BACKEND = "django_ses.SESBackend"
-AWS_SES_FROM_EMAIL = os.getenv("AWS_SES_FROM_EMAIL")
-DEFAULT_FROM_EMAIL = AWS_SES_FROM_EMAIL
-
-AWS_SES_ACCESS_KEY_ID = os.getenv("AWS_SES_ACCESS_KEY_ID")
-AWS_SES_SECRET_ACCESS_KEY = os.getenv("AWS_SES_SECRET_ACCESS_KEY")
-AWS_SES_REGION_NAME = os.getenv("AWS_SES_REGION_NAME")
-AWS_SES_REGION_ENDPOINT = f"email.{AWS_SES_REGION_NAME}.amazonaws.com"
-USE_SES_V2 = True
-
-DOMAIN = os.getenv("DOMAIN")
-SITE_NAME = "Ecommerce Store"
 
 
 # Password validation
@@ -147,13 +134,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTHENTICATION_BACKENDS = [
-    'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.facebook.FacebookAppOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-]
-
+# REST FRAMEWORK SETTINGS
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "users.authentication.CustomJWTAuthentication",
@@ -167,6 +148,7 @@ SIMPLE_JWT = {
     
 }
 
+# DJOSER SETTINGS
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
@@ -177,6 +159,28 @@ DJOSER = {
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': os.getenv('REDIRECT_URLS')
 }
 
+# email settings
+EMAIL_BACKEND = "django_ses.SESBackend"
+AWS_SES_FROM_EMAIL = os.getenv("AWS_SES_FROM_EMAIL")
+DEFAULT_FROM_EMAIL = AWS_SES_FROM_EMAIL
+# AWS
+AWS_SES_ACCESS_KEY_ID = os.getenv("AWS_SES_ACCESS_KEY_ID")
+AWS_SES_SECRET_ACCESS_KEY = os.getenv("AWS_SES_SECRET_ACCESS_KEY")
+AWS_SES_REGION_NAME = os.getenv("AWS_SES_REGION_NAME")
+AWS_SES_REGION_ENDPOINT = f"email.{AWS_SES_REGION_NAME}.amazonaws.com"
+USE_SES_V2 = True
+DOMAIN = os.getenv("DOMAIN")
+SITE_NAME = "Ecommerce Store"
+
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# GOOGLE OAUTH2 SETTINGS
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY= os.getenv('GOOGLE_AUTH_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('GOOGLE_AUTH_SECRET')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
@@ -186,6 +190,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 ]
 # SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = 
 
+# FACEBOOK OAUTH2 SETTINGS
 SOCIAL_AUTH_FACEBOOK_KEY= os.getenv('FACEBOOK_AUTH_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('FACEBOOK_AUTH_SECRET')
 SOCIAL_AUTH_FACEBOOK_SCOPE = [
@@ -194,9 +199,9 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = [
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id,name,email', 
 }
-
 SOCIAL_AUTH_FACEBOOK_API_VERSION = '17.0'
 
+#  COOKIES SETTINGS
 AUTH_COOKIE = 'access'
 AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5
 AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24
