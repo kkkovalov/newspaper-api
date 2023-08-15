@@ -4,4 +4,5 @@ from store.views import *
 app_name = 'store'
 
 urlpatterns = [
+    
 ]
