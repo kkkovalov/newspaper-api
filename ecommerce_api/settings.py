@@ -7,6 +7,7 @@ from django.core.management.utils import get_random_secret_key
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 AUTH_USER_MODEL = "users.UserAccount"
+DEVELOPMENT_MODE = bool(os.getenv('DEVELOPMENT_MODE', default=False))
 
 dotenv_file = BASE_DIR / ".env"
 
@@ -28,18 +29,21 @@ CORS_ALLOWED_CREDENTIALS = True
 # Application definition
 
 INSTALLED_APPS = [
-    "users",
-    "djoser",
-    "rest_framework",
-    # "rest_framework_simplejwt.token_blacklist",
-    "corsheaders",
-    'social_django',
+    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'storages',
+    "users",
+    "djoser",
+    "rest_framework",
+    # "rest_framework_simplejwt.token_blacklist",
+    'drf_yasg',
+    "corsheaders",
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -124,10 +128,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "static"
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
+if DEVELOPMENT_MODE is True:
+    STATIC_URL = "static/"
+    STATIC_ROOT = BASE_DIR / "static"
+    MEDIA_URL = "media/"
+    MEDIA_ROOT = BASE_DIR / "media"
+else:
+    AWS_S3_ACCESS_KEY_ID = os.getenv('AWS_S3_ACCESS_KEY_ID')
+    AWS_S3_SECRET_ACCESS_KEY = os.getenv('AWS_S3_SECRET_ACCESS_KEY')
+    AWS_S3_REGION_NAME=os.getenv()
+    
+    STORAGES = {
+        'default': {'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage'},
+        'staticfiles':{'BACKEND': 'storages.backends.s3boto3.S3StaticStorage'},
+        
+    }
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
