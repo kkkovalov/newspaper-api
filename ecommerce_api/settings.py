@@ -134,10 +134,20 @@ if DEVELOPMENT_MODE is True:
     MEDIA_URL = "media/"
     MEDIA_ROOT = BASE_DIR / "media"
 else:
-    # AWS_S3_ACCESS_KEY_ID = os.getenv('AWS_S3_ACCESS_KEY_ID')
-    # AWS_S3_SECRET_ACCESS_KEY = os.getenv('AWS_S3_SECRET_ACCESS_KEY')
-    # AWS_S3_REGION_NAME=os.getenv()
-    pass
+    AWS_STORAGE_BUCKET_NAME=os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_LOCATION = 'static'
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    
+    AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN')
+    AWS_S3_ACCESS_KEY_ID = os.getenv('AWS_S3_ACCESS_KEY_ID')
+    AWS_S3_SECRET_ACCESS_KEY = os.getenv('AWS_S3_SECRET_ACCESS_KEY')
+    
+   
+    AWS_S3_REGION_NAME=os.getenv('AWS_S3_REGION_NAME')
+    AWS_S3_ENDPOINT_URL=f'https://${AWS_S3_REGION_NAME}.digitaloceanspaces.com'
     
     STORAGES = {
         'default': {'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage'},
@@ -193,7 +203,6 @@ SITE_NAME = "Ecommerce Store"
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.facebook.FacebookAppOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
