@@ -1,6 +1,7 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from dj_database_url import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +14,7 @@ if os.path.isfile(dotenv_file):
     load_dotenv(dotenv_file)
     
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-DEBUG = bool(os.getenv("DJANGO_DEBUG", False))
+DEBUG = bool(os.getenv("DJANGO_DEBUG", default=False))
 DEVELOPMENT_MODE = bool(os.getenv('DEVELOPMENT_MODE', default=False))
 
 ALLOWED_HOSTS = ['*']
@@ -85,8 +86,6 @@ DATABASES = {
     }
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -121,13 +120,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-if DEVELOPMENT_MODE is True:
-    STATIC_URL = "static/"
-    STATIC_ROOT = BASE_DIR / "static"
-    MEDIA_URL = "media/"
-    MEDIA_ROOT = BASE_DIR / "media"
-else:
-    pass
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles_build"
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
