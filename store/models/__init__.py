@@ -47,5 +47,4 @@ class Rating(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rating_value = models.FloatField(blank=False, default=5.0, verbose_name='Rating value') # required, (1.0-5.0)
     text = models.TextField(blank=True, null=True, verbose_name='Rating text') # optional
-    # user_uploaded_picture = optional ?
     
