@@ -154,28 +154,34 @@ AUTHENTICATION_BACKENDS = [
 # DJOSER SETTINGS
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
+    "ACTIVATION_URL": "#/activation/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": True,
-    "ACTIVATION_URL": "activation/{uid}/{token}",
     "USER_CREATE_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': os.getenv('REDIRECT_URLS')
 }
 
+EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'vladyslav.kovalovs@gmail.com'
+EMAIL_HOST_PASSWORD = 'OjZk1hQPbLHYzSrx'
+
+
 
 
 # email settings
-EMAIL_BACKEND = "django_ses.SESBackend"
-AWS_SES_FROM_EMAIL = os.getenv("AWS_SES_FROM_EMAIL")
-DEFAULT_FROM_EMAIL = AWS_SES_FROM_EMAIL
-# AWS
-AWS_SES_ACCESS_KEY_ID = os.getenv("AWS_SES_ACCESS_KEY_ID")
-AWS_SES_SECRET_ACCESS_KEY = os.getenv("AWS_SES_SECRET_ACCESS_KEY")
-AWS_SES_REGION_NAME = os.getenv("AWS_SES_REGION_NAME")
-AWS_SES_REGION_ENDPOINT = f"email.{AWS_SES_REGION_NAME}.amazonaws.com"
-USE_SES_V2 = True
-DOMAIN = os.getenv("DOMAIN")
-SITE_NAME = "Ecommerce Store"
+# EMAIL_BACKEND = "django_ses.SESBackend"
+# AWS_SES_FROM_EMAIL = os.getenv("AWS_SES_FROM_EMAIL")
+# DEFAULT_FROM_EMAIL = AWS_SES_FROM_EMAIL
+# # AWS
+# AWS_SES_ACCESS_KEY_ID = os.getenv("AWS_SES_ACCESS_KEY_ID")
+# AWS_SES_SECRET_ACCESS_KEY = os.getenv("AWS_SES_SECRET_ACCESS_KEY")
+# AWS_SES_REGION_NAME = os.getenv("AWS_SES_REGION_NAME")
+# AWS_SES_REGION_ENDPOINT = f"email.{AWS_SES_REGION_NAME}.amazonaws.com"
+# USE_SES_V2 = True
+# DOMAIN = os.getenv("DOMAIN")
+# SITE_NAME = "Ecommerce Store"
 
 
 # GOOGLE OAUTH2 SETTINGS
