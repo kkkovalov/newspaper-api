@@ -13,7 +13,7 @@ if os.path.isfile(dotenv_file):
     load_dotenv(dotenv_file)
     
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-DEBUG = bool(os.getenv("DJANGO_DEBUG", default=False))
+DEBUG = bool(os.environ.get("DJANGO_DEBUG", False))
 DEVELOPMENT_MODE = bool(os.getenv('DEVELOPMENT_MODE', default=False))
 
 ALLOWED_HOSTS = ['*']
@@ -75,7 +75,7 @@ WSGI_APPLICATION = "ecommerce_api.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
+    "default": {    
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": str(os.getenv("DB_NAME")),
         "USER": str(os.getenv("DB_USER")),
@@ -119,12 +119,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-# Configures the staticfiles directory to serve
-# static files from /static/ on our deployment
-STATIC_ROOT = os.path.join(
-    BASE_DIR, 'staticfiles', 'static')
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles-cdn")
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
+from .cdn.conf import * # noqa
+
+# https://ecommerce-api.nyc3.digitaloceanspaces.com
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -156,6 +161,8 @@ DJOSER = {
     "TOKEN_MODEL": None,
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': os.getenv('REDIRECT_URLS')
 }
+
+
 
 # email settings
 EMAIL_BACKEND = "django_ses.SESBackend"
