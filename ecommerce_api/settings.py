@@ -166,8 +166,8 @@ EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'vladyslav.kovalovs@gmail.com'
 EMAIL_HOST_PASSWORD = 'OjZk1hQPbLHYzSrx'
-
-
+DOMAIN = os.getenv("DOMAIN")
+SITE_NAME = "Ecommerce Store"
 
 
 # email settings
@@ -180,8 +180,6 @@ EMAIL_HOST_PASSWORD = 'OjZk1hQPbLHYzSrx'
 # AWS_SES_REGION_NAME = os.getenv("AWS_SES_REGION_NAME")
 # AWS_SES_REGION_ENDPOINT = f"email.{AWS_SES_REGION_NAME}.amazonaws.com"
 # USE_SES_V2 = True
-# DOMAIN = os.getenv("DOMAIN")
-# SITE_NAME = "Ecommerce Store"
 
 
 # GOOGLE OAUTH2 SETTINGS
