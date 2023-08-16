@@ -17,7 +17,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = bool(os.getenv("DJANGO_DEBUG", False))
 DEVELOPMENT_MODE = bool(os.getenv('DEVELOPMENT_MODE', default=False))
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
+ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", 'https://localhost:8000,http://127.0.0.1:8000').split(',')
 CORS_ALLOWED_CREDENTIALS = True
