@@ -7,21 +7,17 @@ from django.core.management.utils import get_random_secret_key
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 AUTH_USER_MODEL = "users.UserAccount"
-DEVELOPMENT_MODE = bool(os.getenv('DEVELOPMENT_MODE', default=False))
 
 dotenv_file = BASE_DIR / ".env"
 
 if os.path.isfile(dotenv_file):
     load_dotenv(dotenv_file)
-
-# SECURITY WARNING: keep the secret key used in production secret!
+    
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.getenv("DJANGO_DEBUG", False))
+DEVELOPMENT_MODE = bool(os.getenv('DEVELOPMENT_MODE', default=False))
 
-ALLOWED_HOSTS = ["*"]
-# os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1, localhost").split(",")
+ALLOWED_HOSTS = [".vercel.app"]
 
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", 'https://localhost:8000,http://127.0.0.1:8000').split(',')
 CORS_ALLOWED_CREDENTIALS = True
