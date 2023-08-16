@@ -9,7 +9,11 @@
             }
         },
         {
-            "src": "build.sh"
+            "src": "build.sh",
+            "use": "@https://ecommerce-api.nyc3.digitaloceanspaces.com/",
+            "config": {
+                "distDir": "static"
+            }
         }
     ],
     "routes": [
