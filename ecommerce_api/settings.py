@@ -1,7 +1,6 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +24,6 @@ CORS_ALLOWED_CREDENTIALS = True
 # Application definition
 
 INSTALLED_APPS = [
-    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -36,7 +34,6 @@ INSTALLED_APPS = [
     "users",
     "djoser",
     "rest_framework",
-    # "rest_framework_simplejwt.token_blacklist",
     'drf_yasg',
     "corsheaders",
     'social_django',
@@ -130,32 +127,11 @@ if DEVELOPMENT_MODE is True:
     MEDIA_URL = "media/"
     MEDIA_ROOT = BASE_DIR / "media"
 else:
-    AWS_STORAGE_BUCKET_NAME=os.getenv('AWS_STORAGE_BUCKET_NAME')
-    AWS_DEFAULT_ACL = 'public-read'
-    AWS_LOCATION = 'static'
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
-    }
-    
-    AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN')
-    AWS_S3_ACCESS_KEY_ID = os.getenv('AWS_S3_ACCESS_KEY_ID')
-    AWS_S3_SECRET_ACCESS_KEY = os.getenv('AWS_S3_SECRET_ACCESS_KEY')
-    
-   
-    AWS_S3_REGION_NAME=os.getenv('AWS_S3_REGION_NAME')
-    AWS_S3_ENDPOINT_URL=f'https://${AWS_S3_REGION_NAME}.digitaloceanspaces.com'
-    
-    STORAGES = {
-        'default': {'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage'},
-        'staticfiles':{'BACKEND': 'storages.backends.s3boto3.S3StaticStorage'},
-        
-    }
-
+    pass
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # REST FRAMEWORK SETTINGS
 REST_FRAMEWORK = {
@@ -167,9 +143,11 @@ REST_FRAMEWORK = {
     ],
 }
 
-SIMPLE_JWT = {
-    
-}
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # DJOSER SETTINGS
 DJOSER = {
@@ -196,12 +174,6 @@ DOMAIN = os.getenv("DOMAIN")
 SITE_NAME = "Ecommerce Store"
 
 
-AUTHENTICATION_BACKENDS = [
-    'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-]
-
 # GOOGLE OAUTH2 SETTINGS
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY= os.getenv('GOOGLE_AUTH_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('GOOGLE_AUTH_SECRET')
@@ -222,6 +194,8 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id,name,email', 
 }
 SOCIAL_AUTH_FACEBOOK_API_VERSION = '17.0'
+
+
 
 #  COOKIES SETTINGS
 AUTH_COOKIE = 'access'
